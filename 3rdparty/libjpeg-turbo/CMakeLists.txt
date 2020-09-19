@@ -4,9 +4,9 @@ ocv_warnings_disable(CMAKE_C_FLAGS -Wunused-parameter -Wsign-compare -Wshorten-6
 
 set(VERSION_MAJOR 2)
 set(VERSION_MINOR 0)
-set(VERSION_REVISION 2)
+set(VERSION_REVISION 5)
 set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_REVISION})
-set(LIBJPEG_TURBO_VERSION_NUMBER 2000002)
+set(LIBJPEG_TURBO_VERSION_NUMBER 2000005)
 
 string(TIMESTAMP BUILD "opencv-${OPENCV_VERSION}-libjpeg-turbo")
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -65,6 +65,8 @@ set(JPEG_LIB_VERSION 62)
 # OpenCV
 set(JPEG_LIB_VERSION "${VERSION}-${JPEG_LIB_VERSION}" PARENT_SCOPE)
 
+set(THREAD_LOCAL "")  # WITH_TURBOJPEG is not used
+
 if(MSVC)
   add_definitions(-W3 -wd4996 -wd4018)
 endif()
@@ -78,10 +80,11 @@ configure_file(jconfigint.h.in jconfigint.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-set(JPEG_SOURCES jcapimin.c jcapistd.c jccoefct.c jccolor.c jcdctmgr.c jchuff.c
+set(JPEG_SOURCES
+  jcapimin.c jcapistd.c jccoefct.c jccolor.c jcdctmgr.c jchuff.c jcicc.c
   jcinit.c jcmainct.c jcmarker.c jcmaster.c jcomapi.c jcparam.c jcphuff.c
   jcprepct.c jcsample.c jctrans.c jdapimin.c jdapistd.c jdatadst.c jdatasrc.c
-  jdcoefct.c jdcolor.c jddctmgr.c jdhuff.c jdinput.c jdmainct.c jdmarker.c
+  jdcoefct.c jdcolor.c jddctmgr.c jdhuff.c jdicc.c jdinput.c jdmainct.c jdmarker.c
   jdmaster.c jdmerge.c jdphuff.c jdpostct.c jdsample.c jdtrans.c jerror.c
   jfdctflt.c jfdctfst.c jfdctint.c jidctflt.c jidctfst.c jidctint.c jidctred.c
   jquant1.c jquant2.c jutils.c jmemmgr.c jmemnobs.c)

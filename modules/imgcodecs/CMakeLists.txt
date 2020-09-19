@@ -1,5 +1,5 @@
 set(the_description "Image I/O")
-ocv_add_module(imgcodecs opencv_imgproc WRAP java python)
+ocv_add_module(imgcodecs opencv_imgproc WRAP java objc python)
 
 # ----------------------------------------------------------------------------
 #  CMake file for imgcodecs. See root CMakeLists.txt
@@ -43,6 +43,11 @@ endif()
 if(HAVE_TIFF)
   ocv_include_directories(${TIFF_INCLUDE_DIR})
   list(APPEND GRFMT_LIBS ${TIFF_LIBRARIES})
+endif()
+
+if(HAVE_OPENJPEG)
+  ocv_include_directories(${OPENJPEG_INCLUDE_DIRS})
+  list(APPEND GRFMT_LIBS ${OPENJPEG_LIBRARIES})
 endif()
 
 if(HAVE_JASPER)
@@ -110,14 +115,14 @@ file(GLOB imgcodecs_ext_hdrs
 
 if(IOS)
   list(APPEND imgcodecs_srcs ${CMAKE_CURRENT_LIST_DIR}/src/ios_conversions.mm)
-  list(APPEND IMGCODECS_LIBRARIES "-framework Accelerate" "-framework CoreGraphics" "-framework QuartzCore" "-framework AssetsLibrary")
+  list(APPEND IMGCODECS_LIBRARIES "-framework UIKit" "-framework AssetsLibrary")
 endif()
 if(APPLE_FRAMEWORK)
-  list(APPEND IMGCODECS_LIBRARIES "-framework UIKit")
+  list(APPEND IMGCODECS_LIBRARIES "-framework Accelerate" "-framework CoreGraphics" "-framework QuartzCore")
 endif()
 
-if(UNIX)
-  #these variables are set by CHECK_MODULE macro
+if(TRUE)
+  # these variables are set by 'ocv_append_build_options(IMGCODECS ...)'
   foreach(P ${IMGCODECS_INCLUDE_DIRS})
     ocv_include_directories(${P})
   endforeach()

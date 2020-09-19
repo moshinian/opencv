@@ -58,7 +58,7 @@ static const struct VideoBackendInfo builtin_backends[] =
 {
 #ifdef HAVE_FFMPEG
     DECLARE_STATIC_BACKEND(CAP_FFMPEG, "FFMPEG", MODE_CAPTURE_BY_FILENAME | MODE_WRITER, cvCreateFileCapture_FFMPEG_proxy, 0, cvCreateVideoWriter_FFMPEG_proxy),
-#elif defined(ENABLE_PLUGINS)
+#elif defined(ENABLE_PLUGINS) || defined(HAVE_FFMPEG_WRAPPER)
     DECLARE_DYNAMIC_BACKEND(CAP_FFMPEG, "FFMPEG", MODE_CAPTURE_BY_FILENAME | MODE_WRITER),
 #endif
 
@@ -70,6 +70,8 @@ static const struct VideoBackendInfo builtin_backends[] =
 
 #ifdef HAVE_MFX // Media SDK
     DECLARE_STATIC_BACKEND(CAP_INTEL_MFX, "INTEL_MFX", MODE_CAPTURE_BY_FILENAME | MODE_WRITER, create_MFX_capture, 0, create_MFX_writer),
+#elif defined(ENABLE_PLUGINS)
+    DECLARE_DYNAMIC_BACKEND(CAP_INTEL_MFX, "INTEL_MFX", MODE_CAPTURE_BY_FILENAME | MODE_WRITER),
 #endif
 
     // Apple platform
@@ -81,9 +83,13 @@ static const struct VideoBackendInfo builtin_backends[] =
 #ifdef WINRT_VIDEO
     DECLARE_STATIC_BACKEND(CAP_WINRT, "WINRT", MODE_CAPTURE_BY_INDEX, 0, create_WRT_capture, 0),
 #endif
+
 #ifdef HAVE_MSMF
     DECLARE_STATIC_BACKEND(CAP_MSMF, "MSMF", MODE_CAPTURE_ALL | MODE_WRITER, cvCreateCapture_MSMF, cvCreateCapture_MSMF, cvCreateVideoWriter_MSMF),
+#elif defined(ENABLE_PLUGINS)
+    DECLARE_DYNAMIC_BACKEND(CAP_MSMF, "MSMF", MODE_CAPTURE_ALL | MODE_WRITER),
 #endif
+
 #ifdef HAVE_DSHOW
     DECLARE_STATIC_BACKEND(CAP_DSHOW, "DSHOW", MODE_CAPTURE_BY_INDEX, 0, create_DShow_capture, 0),
 #endif
